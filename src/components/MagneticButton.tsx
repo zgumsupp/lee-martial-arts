@@ -5,7 +5,7 @@ interface MagneticButtonProps {
   className?: string;
   onClick?: () => void;
   href?: string;
-  variant?: 'primary' | 'secondary' | 'outline' | 'amber';
+  variant?: 'primary' | 'secondary' | 'outline' | 'purple' | 'amber';
   id?: string;
 }
 
@@ -43,19 +43,22 @@ export const MagneticButton: React.FC<MagneticButtonProps> = ({
   let variantStyles = '';
   if (variant === 'primary') {
     variantStyles =
-      'bg-gradient-to-r from-[#00F2FE] to-[#0099FF] text-[#070A10] font-bold shadow-[0_0_25px_rgba(0,242,254,0.45)] hover:shadow-[0_0_40px_rgba(0,242,254,0.7)] border border-[#00F2FE]/50';
+      'bg-gradient-to-r from-[#00F2FE] via-[#0EA5E9] to-[#38BDF8] text-[#050811] font-black shadow-[0_0_25px_rgba(0,242,254,0.45),inset_0_1px_0_rgba(255,255,255,0.4)] hover:shadow-[0_0_40px_rgba(0,242,254,0.7),inset_0_1px_0_rgba(255,255,255,0.6)] border border-cyan-200/50';
+  } else if (variant === 'purple') {
+    variantStyles =
+      'bg-gradient-to-r from-[#A855F7] via-[#9333EA] to-[#7E22CE] text-white font-black shadow-[0_0_25px_rgba(168,85,247,0.45),inset_0_1px_0_rgba(255,255,255,0.3)] hover:shadow-[0_0_40px_rgba(168,85,247,0.7),inset_0_1px_0_rgba(255,255,255,0.5)] border border-purple-300/40';
   } else if (variant === 'amber') {
     variantStyles =
-      'bg-gradient-to-r from-[#F59E0B] to-[#D97706] text-[#070A10] font-bold shadow-[0_0_25px_rgba(245,158,11,0.45)] hover:shadow-[0_0_40px_rgba(245,158,11,0.7)] border border-[#F59E0B]/50';
+      'bg-gradient-to-r from-[#F59E0B] via-[#D97706] to-[#B45309] text-[#050811] font-black shadow-[0_0_25px_rgba(245,158,11,0.45),inset_0_1px_0_rgba(255,255,255,0.3)] hover:shadow-[0_0_40px_rgba(245,158,11,0.7)] border border-amber-300/40';
   } else if (variant === 'outline') {
     variantStyles =
-      'bg-white/[0.04] text-white border border-white/20 hover:border-[#00F2FE]/60 hover:bg-[#00F2FE]/10 hover:text-[#00F2FE] hover:shadow-[0_0_25px_rgba(0,242,254,0.25)]';
+      'bg-[#090F1C]/60 text-white backdrop-blur-xl border border-white/15 hover:border-[#00F2FE]/60 hover:bg-[#00F2FE]/10 hover:text-[#00F2FE] hover:shadow-[0_0_25px_rgba(0,242,254,0.3),inset_0_1px_0_rgba(255,255,255,0.2)]';
   } else {
     variantStyles =
-      'bg-white/[0.06] text-[#F4F4F6] border border-white/15 hover:bg-white/[0.12] hover:border-white/30';
+      'bg-[#090F1C]/60 text-white backdrop-blur-xl border border-white/12 hover:border-[#A855F7]/50 hover:bg-[#A855F7]/10 hover:text-[#C084FC] hover:shadow-[0_0_25px_rgba(168,85,247,0.25),inset_0_1px_0_rgba(255,255,255,0.15)]';
   }
 
-  const baseClasses = `relative inline-flex items-center justify-center rounded-full transition-transform duration-200 ease-out cursor-pointer select-none ${variantStyles} ${className}`;
+  const baseClasses = `relative inline-flex items-center justify-center rounded-full transition-all duration-200 ease-out cursor-pointer select-none ${variantStyles} ${className}`;
 
   const style = {
     transform: `translate3d(${position.x}px, ${position.y}px, 0)`,

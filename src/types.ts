@@ -19,6 +19,11 @@ export interface JourneyMilestone {
   description: string;
   keyDeliverables: string[];
   tools: string[];
+  metric?: string;
+  metricLabel?: string;
+  status?: string;
+  iconName?: string;
+  navLabel?: string;
 }
 
 export interface ComparisonRow {
@@ -31,7 +36,7 @@ export interface ComparisonRow {
 export interface ProjectWork {
   id: string;
   title: string;
-  category: 'Landing Page' | 'AI SaaS' | '3D WebGL' | 'Design System';
+  category: string;
   tagline: string;
   description: string;
   image: string;
@@ -51,6 +56,8 @@ export interface Testimonial {
   rating: number;
   quote: string;
   impact: string;
+  projectDomain?: string;
+  verified?: boolean;
 }
 
 export interface TimezoneNode {

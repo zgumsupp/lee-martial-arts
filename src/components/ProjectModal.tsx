@@ -12,15 +12,18 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) 
   if (!project) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/80 backdrop-blur-xl animate-in fade-in duration-200">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/80 backdrop-blur-2xl animate-in fade-in duration-200">
       <div
-        className="relative w-full max-w-4xl max-h-[90vh] overflow-y-auto rounded-3xl bg-[#0E1522] border border-white/20 shadow-[0_25px_70px_rgba(0,0,0,0.9),0_0_40px_rgba(0,242,254,0.15)] p-6 sm:p-10"
+        className="relative w-full max-w-4xl max-h-[90vh] overflow-y-auto rounded-3xl bg-[#080E1C]/95 backdrop-blur-2xl border border-white/15 shadow-[0_30px_90px_rgba(0,0,0,0.95),0_0_50px_rgba(0,242,254,0.2),0_0_70px_rgba(168,85,247,0.2),inset_0_1px_0_rgba(255,255,255,0.18)] p-6 sm:p-10"
         onClick={(e) => e.stopPropagation()}
       >
+        {/* Subtle top edge light reflection */}
+        <div className="absolute inset-x-0 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/30 to-transparent pointer-events-none rounded-t-3xl" />
+
         {/* Close button */}
         <button
           onClick={onClose}
-          className="absolute top-6 right-6 p-2.5 rounded-full bg-white/5 border border-white/10 text-white/70 hover:text-white hover:bg-white/10 transition-colors z-10"
+          className="absolute top-6 right-6 p-2.5 rounded-full bg-white/5 border border-white/12 text-white/70 hover:text-[#00F2FE] hover:bg-white/10 hover:border-[#00F2FE]/40 hover:shadow-[0_0_15px_rgba(0,242,254,0.3)] transition-all z-10"
           aria-label="Close project modal"
         >
           <X className="w-5 h-5" />
@@ -28,10 +31,10 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) 
 
         {/* Modal Header */}
         <div className="mb-6">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#00F2FE]/10 border border-[#00F2FE]/30 text-[#00F2FE] text-xs font-mono font-bold uppercase mb-2">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#00F2FE]/10 border border-[#00F2FE]/30 text-[#00F2FE] text-xs font-mono font-bold uppercase mb-2 shadow-[0_0_15px_rgba(0,242,254,0.2)]">
             {project.category}
           </div>
-          <h2 className="font-heading text-2xl sm:text-4xl font-black text-white tracking-[0.1em]">
+          <h2 className="font-heading text-2xl sm:text-4xl font-black text-white tracking-[0.1em] drop-shadow-[0_0_20px_rgba(0,242,254,0.25)]">
             {project.title}
           </h2>
           <p className="text-sm sm:text-base text-[#00F2FE]/90 font-medium mt-1">
@@ -40,20 +43,20 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) 
         </div>
 
         {/* Project Image Preview */}
-        <div className="relative rounded-2xl overflow-hidden mb-8 border border-white/10 group">
+        <div className="relative rounded-2xl overflow-hidden mb-8 border border-white/12 group">
           <img
             src={project.image}
             alt={project.title}
             className="w-full h-64 sm:h-96 object-cover object-center group-hover:scale-105 transition-transform duration-700"
             referrerPolicy="no-referrer"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#0B0F17] via-transparent to-transparent opacity-80" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#080E1C] via-transparent to-transparent opacity-85" />
         </div>
 
         {/* Stats Grid */}
         <div className="grid grid-cols-3 gap-4 mb-8">
           {project.stats.map((st, i) => (
-            <div key={i} className="p-4 rounded-xl bg-white/[0.03] border border-white/10 text-center">
+            <div key={i} className="p-4 rounded-xl bg-white/[0.04] border border-white/10 backdrop-blur-md text-center">
               <span className="text-lg sm:text-2xl font-mono font-black text-white block">
                 {st.value}
               </span>

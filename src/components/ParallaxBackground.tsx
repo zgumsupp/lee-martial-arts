@@ -49,11 +49,11 @@ export const ParallaxBackground: React.FC = () => {
         }}
       />
 
-      {/* Layer 2: Soft Amber Gold Orb (Center Right - moves at 0.22 rate) */}
+      {/* Layer 2: Neon Purple / Violet Glow Orb (Center Right - moves at 0.22 rate) */}
       <div
-        className="absolute w-[520px] h-[520px] rounded-full blur-[130px] opacity-20"
+        className="absolute w-[560px] h-[560px] rounded-full blur-[140px] opacity-25"
         style={{
-          background: 'radial-gradient(circle, #F59E0B 0%, rgba(245,158,11,0.15) 50%, transparent 80%)',
+          background: 'radial-gradient(circle, #A855F7 0%, rgba(168,85,247,0.18) 50%, transparent 80%)',
           top: '35%',
           right: '-120px',
           transform: `translate3d(${mousePos.x * -35}px, ${-scrollY * 0.2 + mousePos.y * -30}px, 0)`,
@@ -61,11 +61,11 @@ export const ParallaxBackground: React.FC = () => {
         }}
       />
 
-      {/* Layer 3: Deep Royal Purple Glow (Bottom Left - moves at 0.18 rate) */}
+      {/* Layer 3: Deep Cyber Violet Glow (Bottom Left - moves at 0.18 rate) */}
       <div
-        className="absolute w-[700px] h-[700px] rounded-full blur-[160px] opacity-20"
+        className="absolute w-[700px] h-[700px] rounded-full blur-[160px] opacity-22"
         style={{
-          background: 'radial-gradient(circle, #7000FF 0%, rgba(112,0,255,0.12) 50%, transparent 80%)',
+          background: 'radial-gradient(circle, #7000FF 0%, rgba(112,0,255,0.14) 50%, transparent 80%)',
           bottom: '5%',
           left: '10%',
           transform: `translate3d(${mousePos.x * 30}px, ${scrollY * 0.08}px, 0)`,
@@ -75,17 +75,17 @@ export const ParallaxBackground: React.FC = () => {
 
       {/* Layer 4: Abstract Glass Geometric Accents (moves at 0.32 rate) */}
       <div
-        className="absolute top-[28%] left-[8%] w-32 h-32 rounded-3xl border border-white/[0.08] bg-white/[0.01] backdrop-blur-[2px] opacity-40 rotate-12"
+        className="absolute top-[28%] left-[8%] w-32 h-32 rounded-3xl border border-white/[0.1] bg-white/[0.02] backdrop-blur-[3px] opacity-45 rotate-12"
         style={{
           transform: `translate3d(${mousePos.x * -18}px, ${-scrollY * 0.28}px, 0) rotate(${12 + scrollY * 0.03}deg)`,
-          boxShadow: '0 0 30px rgba(0,242,254,0.08)',
+          boxShadow: '0 0 30px rgba(0,242,254,0.15)',
         }}
       />
       <div
-        className="absolute top-[65%] right-[12%] w-40 h-40 rounded-full border border-[#F59E0B]/20 bg-[#F59E0B]/[0.01] opacity-30"
+        className="absolute top-[65%] right-[12%] w-40 h-40 rounded-full border border-[#A855F7]/25 bg-[#A855F7]/[0.02] backdrop-blur-[3px] opacity-40"
         style={{
           transform: `translate3d(${mousePos.x * 20}px, ${-scrollY * 0.22}px, 0)`,
-          boxShadow: '0 0 40px rgba(245,158,11,0.08)',
+          boxShadow: '0 0 40px rgba(168,85,247,0.18)',
         }}
       />
 
