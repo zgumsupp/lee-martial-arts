@@ -206,5 +206,57 @@
 .stagger-delay-6 { transition-delay: 600ms; }
 .stagger-delay-7 { transition-delay: 700ms; }
 
+/* ========================================================================= */
+/* HERO BACKGROUND VIDEO RESPONSIVE POSITIONING & SCALING                   */
+/* ========================================================================= */
+.hero-video-iframe {
+  border: none;
+  position: absolute;
+  pointer-events: none;
+  overflow: hidden;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: max(100%, 177.78vh);
+  height: max(100%, 56.25vw);
+  min-width: 100%;
+  min-height: 100%;
+}
+
+/* Tablet & Large Mobile in Portrait */
+@media (max-width: 1024px) and (orientation: portrait) {
+  .hero-video-iframe {
+    width: max(100%, 140vh);
+    height: max(100%, 75vw);
+    left: 50%;
+    top: 40%;
+    transform: translate(-50%, -40%);
+  }
+}
+
+/* Mobile Screens (Under 768px): Scale properly so face is not cut off */
+@media (max-width: 768px) {
+  .hero-video-iframe {
+    width: max(100%, 138vw);
+    height: max(55vh, 78vw);
+    min-width: 100%;
+    min-height: 50vh;
+    left: 50%;
+    top: 35%;
+    transform: translate(-50%, -35%);
+  }
+}
+
+/* Extra Small Mobile Devices (Under 480px) */
+@media (max-width: 480px) {
+  .hero-video-iframe {
+    width: max(100%, 145vw);
+    height: max(58vh, 82vw);
+    left: 50%;
+    top: 33%;
+    transform: translate(-50%, -33%);
+  }
+}
+
 
 

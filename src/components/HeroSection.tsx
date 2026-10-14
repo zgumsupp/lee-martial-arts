@@ -31,23 +31,9 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ playClickSound }) => {
           <iframe
             allow="fullscreen; autoplay"
             allowFullScreen
-            height="100%"
             src="https://streamable.com/e/cs8t6f?autoplay=1&muted=1&loop=1&controls=0"
-            width="100%"
             title="Hero Background Video"
-            style={{
-              border: 'none',
-              width: 'max(100%, 177.78vh)',
-              height: 'max(100%, 56.25vw)',
-              minWidth: '100%',
-              minHeight: '100%',
-              position: 'absolute',
-              left: '50%',
-              top: '50%',
-              transform: 'translate(-50%, -50%)',
-              overflow: 'hidden',
-              pointerEvents: 'none',
-            }}
+            className="hero-video-iframe"
           />
         </div>
 
