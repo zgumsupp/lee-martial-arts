@@ -26,29 +26,24 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ playClickSound }) => {
       {/* 1. HERO BACKGROUND VIDEO & AMBIENT NEON GLOW LAYER                         */}
       {/* ========================================================================= */}
       <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden select-none">
-        {/* Streamable Video Background Container */}
+        {/* Native HTML5 Video Background Container */}
         <div className="absolute inset-0 w-full h-full overflow-hidden pointer-events-none">
-          <iframe
-            allow="fullscreen; autoplay"
-            allowFullScreen
-            height="100%"
-            src="https://streamable.com/e/cs8t6f?autoplay=1&muted=1&loop=1&controls=0"
-            width="100%"
-            title="Hero Background Video"
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            controls={false}
+            src="https://mixkit.co"
+            className="w-full h-full object-cover absolute inset-0 pointer-events-none"
             style={{
-              border: 'none',
-              width: 'max(100%, 177.78vh)',
-              height: 'max(100%, 56.25vw)',
-              minWidth: '100%',
-              minHeight: '100%',
-              position: 'absolute',
-              left: '50%',
-              top: '50%',
-              transform: 'translate(-50%, -50%)',
-              overflow: 'hidden',
-              pointerEvents: 'none',
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover',
             }}
-          />
+          >
+            <source src="https://mixkit.co" type="video/mp4" />
+          </video>
         </div>
 
         {/* Deep dark tint overlay ensuring white text & neon elements stay 100% crisp and readable */}
