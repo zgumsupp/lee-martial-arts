@@ -13,6 +13,7 @@ import {
 import { MagneticButton } from './MagneticButton';
 import { CAPABILITIES, PERSONAL_INFO } from '../data/portfolioData';
 import { useLanguage } from '../context/LanguageContext';
+import { SupportedLanguage } from '../data/translations';
 
 const getIcon = (iconName: string, theme: 'cyan' | 'purple' | 'amber') => {
   const colorClass =
@@ -117,8 +118,132 @@ const CardFallingDust: React.FC<CardFallingDustProps> = ({ seed = 0 }) => {
 };
 
 interface AboutCapabilitiesProps {
-  playClickSound: () => void;
+  playClickSound?: () => void;
+  currentLanguage?: SupportedLanguage;
+  locale?: SupportedLanguage;
 }
+
+interface AboutSectionTranslation {
+  sectionHeader: string;
+  paragraph: string;
+  card1: { title: string; text: string };
+  card2: { title: string; text: string };
+  card3: { title: string; text: string };
+}
+
+export const ABOUT_TRANSLATIONS: Record<SupportedLanguage, AboutSectionTranslation> = {
+  English: {
+    sectionHeader: 'WHO I AM',
+    paragraph:
+      "Hi, I'm ANZIL HAYAT. I am an AI-powered commerce specialist and digital creator. Backed by a strong background in scaling brands across Amazon, TikTok Shop, and Etsy, I now combine advanced vibe coding workflows with e-commerce strategy to build high-converting digital storefronts and premium assets.",
+    card1: {
+      title: 'Digital Products',
+      text: 'Creating premium, ready-to-sell assets, e-books, and custom digital templates optimized for global audiences.',
+    },
+    card2: {
+      title: 'AI Automation',
+      text: 'Leveraging cutting-edge AI workflows and vibe coding systems to build intelligent, fast-scaling web applications.',
+    },
+    card3: {
+      title: 'UI/UX Design',
+      text: 'Crafting beautiful, dark-mode glassmorphic user interfaces that deliver smooth animations and a premium user experience.',
+    },
+  },
+  '한국어 (Korean)': {
+    sectionHeader: '자기소개',
+    paragraph:
+      '안녕하세요, 안질 하야트(ANZIL HAYAT)입니다. 저는 AI 기반 커머스 전문가이자 디지털 크리에이터입니다. 아마존, 틱톡 숍, 엣시에서 브랜드를 성장시킨 탄탄한 경험을 바탕으로, 이제는 고급 바이브 코딩 워크플로우와 이커머스 전략을 결합하여 전환율이 높은 디지털 스토어프론트와 프리미엄 자산을 구축하고 있습니다.',
+    card1: {
+      title: '디지털 상품',
+      text: '글로벌 오디언스에 최적화된 프리미엄 바로 판매 가능한 자산, 전자책, 맞춤형 디지털 템플릿 제작.',
+    },
+    card2: {
+      title: 'AI 자동화',
+      text: '최첨단 AI 워크플로우와 바이브 코딩 시스템을 활용하여 지능적이고 빠르게 확장 가능한 웹 애플리케이션 구축.',
+    },
+    card3: {
+      title: 'UI/UX 디자인',
+      text: '부드러운 애니메이션과 프리미엄 사용자 경험을 제공하는 아름다운 다크 모드 글래스모피즘 사용자 인터페이스 제작.',
+    },
+  },
+  '日本語 (Japanese)': {
+    sectionHeader: '自己紹介',
+    paragraph:
+      'こんにちは、アンジル・ハヤト（ANZIL HAYAT）です。私はAI駆動型커머스（コマース）専門家であり、デジタルクリエイターです。Amazon、TikTok Shop、Etsyでブランドをスケールさせた強力なバックグラウンドを持ち、現在は高度なバイブコーディングワークフローとEコマース戦略を組み合わせて、高コンバージョンなデジタルストアフロントとプレミアムアセットを構築しています。',
+    card1: {
+      title: 'デジタル製品',
+      text: 'グローバルオーディエンス向けに最適化された、プレミアムな即売可能アセット、電子書籍、カスタムデジタルテンプレートの作成。',
+    },
+    card2: {
+      title: 'AI自動化',
+      text: '最先端のAIワークフローとバイブコーディングシステムを活用して、インテリジェントで高速スケールなウェブアプリケーションを構築。',
+    },
+    card3: {
+      title: 'UI/UXデザイン',
+      text: '滑らかなアニメーションとプレミアムなユーザーエクスペリエンスを提供する、美しいダークモードのグラスモフィズムユーザーインターフェイスの制作。',
+    },
+  },
+  'العربية (Arabic)': {
+    sectionHeader: 'من أنا',
+    paragraph:
+      'مرحباً، أنا أنزيل حياة. خبيرة تجارة إلكترونية مدعومة بالذكاء الاصطناعي وصانعة محتوى رقمي. مع خلفية قوية في توسيع نطاق العلامات التجارية عبر أمازون، وتيك توك شوب، وإيتسي، أجمع الآن بين سير عمل البرمجة المتقدمة (vibe coding) واستراتيجيات التجارة الإلكترونية لبناء واجهات متاجر رقمية عالية التحويل وأصول مميزة.',
+    card1: {
+      title: 'المنتجات الرقمية',
+      text: 'إنشاء أصول مميزة جاهزة للبيع، وكتب إلكترونية، وقوالب رقمية مخصصة ومحسنة للجماهير العالمية.',
+    },
+    card2: {
+      title: 'أتمتة الذكاء الاصطناعي',
+      text: 'الاستفادة من سير عمل الذكاء الاصطناعي المتطور وأنظمة البرمجة (vibe coding) لبناء تطبيقات ويب ذكية وسريعة التوسع.',
+    },
+    card3: {
+      title: 'تصميم واجهة المستخدم',
+      text: 'صياغة واجهات مستخدم زجاجية (glassmorphic) جميلة بالوضع الداكن توفر رسومًا متحركة سلسة وتجربة مستخدم مميزة.',
+    },
+  },
+  'Deutsch (German)': {
+    sectionHeader: 'WER ICH BIN',
+    paragraph:
+      'Hallo, ich bin ANZIL HAYAT. Ich bin eine KI-gestützte E-Commerce-Spezialistin und digitale Schöpferin. Mit einem starken Hintergrund in der Skalierung von Marken auf Amazon, TikTok Shop und Etsy kombiniere ich nun fortschrittliche Vibe-Coding-Workflows mit E-Commerce-Strategien, um hochkonvertierende digitale Storefronts und Premium-Assets aufzubauen.',
+    card1: {
+      title: 'Digitale Produkte',
+      text: 'Erstellung von verkaufsfertigen Premium-Assets, E-Books und maßgeschneiderten digitalen Vorlagen, optimiert für ein globales Publikum.',
+    },
+    card2: {
+      title: 'KI-Automatisierung',
+      text: 'Nutzung modernster KI-Workflows und Vibe-Coding-Systeme zur Erstellung intelligenter, schnell skalierbarer Webanwendungen.',
+    },
+    card3: {
+      title: 'UI/UX Design',
+      text: 'Gestaltung wunderschöner, dunkelmodus-glassmorphischer Benutzeroberflächen, die flüssige Animationen und ein erstklassiges Benutzererlebnis bieten.',
+    },
+  },
+};
+
+const renderParagraphWithHighlight = (text: string) => {
+  const highlights = [
+    '안질 하야트(ANZIL HAYAT)',
+    'アンジル・ハヤト（ANZIL HAYAT）',
+    'أنزيل حياة',
+    'ANZIL HAYAT',
+  ];
+
+  for (const name of highlights) {
+    if (text.includes(name)) {
+      const parts = text.split(name);
+      return (
+        <>
+          {parts[0]}
+          <strong className="text-[#00F2FE] font-black drop-shadow-[0_0_15px_rgba(0,242,254,0.6)]">
+            {name}
+          </strong>
+          {parts.slice(1).join(name)}
+        </>
+      );
+    }
+  }
+
+  return text;
+};
 
 interface CardSparkleParticle {
   x: number;
@@ -134,8 +259,14 @@ interface CardSparkleParticle {
   isStar: boolean;
 }
 
-export const AboutCapabilities: React.FC<AboutCapabilitiesProps> = ({ playClickSound }) => {
-  const { t } = useLanguage();
+export const AboutCapabilities: React.FC<AboutCapabilitiesProps> = ({
+  playClickSound,
+  currentLanguage,
+  locale,
+}) => {
+  const { language: contextLanguage, t } = useLanguage();
+  const activeLanguage: SupportedLanguage = currentLanguage || locale || contextLanguage || 'English';
+  const aboutData = ABOUT_TRANSLATIONS[activeLanguage] || ABOUT_TRANSLATIONS['English'];
   const [activeFilter, setActiveFilter] = useState<string>('ALL');
   const [isAboutRevealed, setIsAboutRevealed] = useState<boolean>(false);
   const aboutSectionRef = useRef<HTMLElement | null>(null);
@@ -465,13 +596,13 @@ export const AboutCapabilities: React.FC<AboutCapabilitiesProps> = ({ playClickS
                 }}
                 className="font-heading text-3xl sm:text-5xl lg:text-6xl font-bold text-white tracking-[0.12em] leading-tight antialiased select-none"
               >
-                WHO I AM
+                {aboutData.sectionHeader}
               </h2>
             </div>
 
             {/* Lead Narrative with Scroll Reveal */}
             <p className="text-base sm:text-xl lg:text-2xl text-white font-medium leading-relaxed max-w-4xl mb-10 drop-shadow-[0_2px_16px_rgba(0,0,0,0.98)] reveal-on-scroll stagger-delay-1">
-              Hi, I&apos;m <strong className="text-[#00F2FE] font-black drop-shadow-[0_0_15px_rgba(0,242,254,0.6)]">ANZIL HAYAT</strong>. I am an AI-powered commerce specialist and digital creator. Backed by a strong background in scaling brands across Amazon, TikTok Shop, and Etsy, I now combine advanced vibe coding workflows with e-commerce strategy to build high-converting digital storefronts and premium assets.
+              {renderParagraphWithHighlight(aboutData.paragraph)}
             </p>
 
             {/* Individual Feature Cards with Soft Glassmorphism, Floating Animations & Staggered Scroll Reveal */}
@@ -495,10 +626,10 @@ export const AboutCapabilities: React.FC<AboutCapabilitiesProps> = ({ playClickS
                     </span>
                   </div>
                   <h3 className="text-lg font-bold text-white mb-2 group-hover:text-[#00F2FE] drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)] transition-colors relative z-10">
-                    Digital Products
+                    {aboutData.card1.title}
                   </h3>
                   <p className="text-xs sm:text-sm text-[#D1D1DB] leading-relaxed drop-shadow-[0_1px_4px_rgba(0,0,0,0.8)] relative z-10">
-                    Creating premium, ready-to-sell assets, e-books, and custom digital templates optimized for global audiences.
+                    {aboutData.card1.text}
                   </p>
                 </div>
               </div>
@@ -522,10 +653,10 @@ export const AboutCapabilities: React.FC<AboutCapabilitiesProps> = ({ playClickS
                     </span>
                   </div>
                   <h3 className="text-lg font-bold text-white mb-2 group-hover:text-[#C084FC] drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)] transition-colors relative z-10">
-                    AI Automation
+                    {aboutData.card2.title}
                   </h3>
                   <p className="text-xs sm:text-sm text-[#D1D1DB] leading-relaxed drop-shadow-[0_1px_4px_rgba(0,0,0,0.8)] relative z-10">
-                    Leveraging cutting-edge AI workflows and vibe coding systems to build intelligent, fast-scaling web applications.
+                    {aboutData.card2.text}
                   </p>
                 </div>
               </div>
@@ -549,10 +680,10 @@ export const AboutCapabilities: React.FC<AboutCapabilitiesProps> = ({ playClickS
                     </span>
                   </div>
                   <h3 className="text-lg font-bold text-white mb-2 group-hover:text-emerald-400 drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)] transition-colors relative z-10">
-                    UI/UX Design
+                    {aboutData.card3.title}
                   </h3>
                   <p className="text-xs sm:text-sm text-[#D1D1DB] leading-relaxed drop-shadow-[0_1px_4px_rgba(0,0,0,0.8)] relative z-10">
-                    Crafting beautiful, dark-mode glassmorphic user interfaces that deliver smooth animations and a premium user experience.
+                    {aboutData.card3.text}
                   </p>
                 </div>
               </div>

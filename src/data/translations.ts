@@ -36,6 +36,13 @@ export interface LanguageData {
     stat3Label: string;
     stat4Label: string;
   };
+  about?: {
+    sectionHeader: string;
+    paragraph: string;
+    card1: { title: string; text: string };
+    card2: { title: string; text: string };
+    card3: { title: string; text: string };
+  };
   capabilities: {
     badge: string;
     title: string;
