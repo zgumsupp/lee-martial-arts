@@ -6,13 +6,66 @@ import { ProjectModal } from './ProjectModal';
 import { FEATURED_WORKS } from '../data/portfolioData';
 import { ProjectWork } from '../types';
 import { useLanguage } from '../context/LanguageContext';
+import { SupportedLanguage } from '../data/translations';
 
 interface FeaturedWorksProps {
-  playClickSound: () => void;
+  playClickSound?: () => void;
+  currentLanguage?: SupportedLanguage;
+  locale?: SupportedLanguage;
 }
 
-export const FeaturedWorks: React.FC<FeaturedWorksProps> = ({ playClickSound }) => {
-  const { t } = useLanguage();
+interface PrismCardTranslation {
+  category: string;
+  title: string;
+  tagline: string;
+  description: string;
+}
+
+export const PRISM_CARD_TRANSLATIONS: Record<SupportedLanguage, PrismCardTranslation> = {
+  English: {
+    category: 'Marketplace Ops',
+    title: 'PRISM DESIGN SYSTEM — Enterprise Tokens & Glass UI',
+    tagline: 'Comprehensive React UI component framework designed specifically for dark luxury experiences.',
+    description:
+      'Features 40+ accessible UI primitives, mathematical corner nesting calculations, contrast-verified neon accents, and automatic CSS variable token injection.',
+  },
+  'العربية (Arabic)': {
+    category: 'عمليات السوق',
+    title: 'نظام تصميم بريزم — واجهة زجاجية للمؤسسات',
+    tagline: 'إطار عمل شامل لمكونات React UI مصمم خصيصًا لتجارب الفخامة المظلمة.',
+    description:
+      'يتميز بأكثر من 40 عنصرًا أساسيًا لواجهة المستخدم، وحسابات تداخل الزوايا الرياضية، ولمسات النيون المعتمدة على التباين، وتنسيق CSS التلقائي المصمم لسرعة التحويل.',
+  },
+  '한국어 (Korean)': {
+    category: '마켓플레이스 운영',
+    title: 'PRISM 디자인 시스템 — 엔터프라이즈 토큰 & 글래스 UI',
+    tagline: '다크 럭셔리 경험을 위해 특별히 설계된 포괄적인 React UI 컴포넌트 프레임워크.',
+    description:
+      '40개 이상의 접근 가능한 UI 프리미티브, 수학적 코너 네스팅 계산, 대비가 검증된 네온 악센트 및 빠른 전환을 위해 최적화된 자동 CSS를 제공합니다.',
+  },
+  '日本語 (Japanese)': {
+    category: 'マーケットプレイス運用',
+    title: 'PRISMデザインシステム — エンタープライズトークン & グラスUI',
+    tagline: 'ダークラグジュアリーな体験のために特別に設計された、包括的なReact UIコンポーネントフレームワーク。',
+    description:
+      '40以上のアクセシブルなUIプリミティブ、数学的なコーナーネ스팅計算、コントラスト検証済みのネオンアクセント、および高速な変換のために最適화された自動CSSを特徴としています。',
+  },
+  'Deutsch (German)': {
+    category: 'Marktplatz-Ops',
+    title: 'PRISM DESIGN SYSTEM — Enterprise Tokens & Glass UI',
+    tagline: 'Ein umfassendes React UI-Komponenten-Framework, das speziell für dunkle Luxuserlebnisse entwickelt wurde.',
+    description:
+      'Bietet über 40 zugängliche UI-Primitiven, mathematische Eckverschachtelungsberechnungen, kontrastgeprüfte Neon-Akzente und automatische CSS-Optimierung für maximale Konversion.',
+  },
+};
+
+export const FeaturedWorks: React.FC<FeaturedWorksProps> = ({
+  playClickSound,
+  currentLanguage,
+  locale,
+}) => {
+  const { language: contextLanguage, t } = useLanguage();
+  const activeLanguage: SupportedLanguage = currentLanguage || locale || contextLanguage || 'English';
   const [selectedCategory, setSelectedCategory] = useState<string>('ALL');
   const [activeModalProject, setActiveModalProject] = useState<ProjectWork | null>(null);
   const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
@@ -24,7 +77,7 @@ export const FeaturedWorks: React.FC<FeaturedWorksProps> = ({ playClickSound }) 
     'E-Commerce': t.works.categories.ecommerce,
     'Digital Assets': t.works.categories.digitalAssets,
     'Storefront Design': t.works.categories.storefrontDesign,
-    'Marketplace Ops': 'Marketplace Ops',
+    'Marketplace Ops': PRISM_CARD_TRANSLATIONS[activeLanguage]?.category || 'Marketplace Ops',
   };
 
   const filteredProjects =
@@ -96,10 +149,16 @@ export const FeaturedWorks: React.FC<FeaturedWorksProps> = ({ playClickSound }) 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {filteredProjects.map((project, index) => {
             const isPurpleCard = index % 2 === 1;
+            const isPrismCard = project.id === 'prism-ui';
+            const prismT = isPrismCard
+              ? PRISM_CARD_TRANSLATIONS[activeLanguage] || PRISM_CARD_TRANSLATIONS['English']
+              : null;
+
             const projT = t.works.items.find((item) => item.id === project.id);
-            const cardTitle = projT?.title || project.title;
-            const cardTagline = projT?.tagline || project.tagline;
-            const cardDescription = projT?.description || project.description;
+            const cardCategory = prismT?.category || project.category;
+            const cardTitle = prismT?.title || projT?.title || project.title;
+            const cardTagline = prismT?.tagline || projT?.tagline || project.tagline;
+            const cardDescription = prismT?.description || projT?.description || project.description;
             const cardTags = projT?.tags || project.tags;
 
             return (
@@ -118,6 +177,7 @@ export const FeaturedWorks: React.FC<FeaturedWorksProps> = ({ playClickSound }) 
                     playClickSound();
                     setActiveModalProject({
                       ...project,
+                      category: cardCategory,
                       title: cardTitle,
                       tagline: cardTagline,
                       description: cardDescription,
@@ -144,7 +204,7 @@ export const FeaturedWorks: React.FC<FeaturedWorksProps> = ({ playClickSound }) 
                             : 'text-[#00F2FE] border-[#00F2FE]/40 shadow-[0_0_12px_rgba(0,242,254,0.25)]'
                         }`}
                       >
-                        {project.category}
+                        {cardCategory}
                       </span>
                     </div>
 
