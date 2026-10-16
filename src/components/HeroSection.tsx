@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { ArrowRight, Sparkles } from 'lucide-react';
 import { MagneticButton } from './MagneticButton';
 
@@ -8,6 +8,16 @@ interface HeroSectionProps {
 
 export const HeroSection: React.FC<HeroSectionProps> = ({ playClickSound }) => {
   const [isEntered, setIsEntered] = useState<boolean>(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  // Live Production Bypass: Programmatic video.play() on mount to guarantee autoplay on Vercel
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.play().catch((err) => {
+        console.warn('Hero video autoplay notice:', err);
+      });
+    }
+  }, []);
 
   // Trigger smooth left-to-right entrance animation on page load
   useEffect(() => {
@@ -29,20 +39,26 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ playClickSound }) => {
         {/* Native HTML5 Video Background Container */}
         <div className="absolute inset-0 w-full h-full overflow-hidden pointer-events-none">
           <video
+            ref={videoRef}
             autoPlay
             loop
             muted
             playsInline
+            {...({ 'webkit-playsinline': 'true' } as any)}
+            preload="auto"
             controls={false}
-            src="https://mixkit.co"
-            className="w-full h-full object-cover absolute inset-0 pointer-events-none"
             style={{
+              pointerEvents: 'none',
+              position: 'absolute',
+              inset: 0,
               width: '100%',
               height: '100%',
               objectFit: 'cover',
+              zIndex: 0,
             }}
+            src="/hero-bg.mp4"
           >
-            <source src="https://mixkit.co" type="video/mp4" />
+            <source src="/hero-bg.mp4" type="video/mp4" />
           </video>
         </div>
 
