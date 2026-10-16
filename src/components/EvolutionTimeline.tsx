@@ -15,6 +15,7 @@ import {
 } from 'lucide-react';
 import { GlassCard } from './GlassCard';
 import { JOURNEY_MILESTONES } from '../data/portfolioData';
+import { useLanguage } from '../context/LanguageContext';
 
 const TIMELINE_CARD_ANIMATIONS = [
   'floatTimelineCard1 5.6s ease-in-out infinite 0s',
@@ -95,14 +96,35 @@ interface EvolutionTimelineProps {
 }
 
 export const EvolutionTimeline: React.FC<EvolutionTimelineProps> = ({ playClickSound }) => {
+  const { t } = useLanguage();
   const [activeStage, setActiveStage] = useState<number>(3); // Default to Stage 04 (Frontier)
   const [revealedItems, setRevealedItems] = useState<Set<number>>(new Set());
   const itemRefs = useRef<(HTMLDivElement | null)[]>([]);
 
+  const milestones = JOURNEY_MILESTONES.map((base, idx) => {
+    const trans = t.journey.stages[idx];
+    if (!trans) return base;
+    return {
+      ...base,
+      stage: trans.stage || base.stage,
+      navLabel: trans.navLabel || base.navLabel,
+      stageBadge: trans.stageBadge || base.stageBadge,
+      year: trans.year || base.year,
+      title: trans.title || base.title,
+      subtitle: trans.subtitle || base.subtitle,
+      description: trans.description || base.description,
+      metricLabel: trans.metricLabel || base.metricLabel,
+      metric: trans.metric || base.metric,
+      status: trans.status || base.status,
+      keyDeliverables: trans.keyDeliverables || base.keyDeliverables,
+      tools: trans.tools || base.tools,
+    };
+  });
+
   // Scroll observer to trigger smooth staggered fade-in animations
   useEffect(() => {
     if (typeof window === 'undefined' || !('IntersectionObserver' in window)) {
-      setRevealedItems(new Set(JOURNEY_MILESTONES.map((_, i) => i)));
+      setRevealedItems(new Set(milestones.map((_, i) => i)));
       return;
     }
 
@@ -136,7 +158,7 @@ export const EvolutionTimeline: React.FC<EvolutionTimelineProps> = ({ playClickS
     const timer = setTimeout(() => {
       setRevealedItems((prev) => {
         if (prev.size === 0) {
-          return new Set(JOURNEY_MILESTONES.map((_, i) => i));
+          return new Set(milestones.map((_, i) => i));
         }
         return prev;
       });
@@ -276,20 +298,23 @@ export const EvolutionTimeline: React.FC<EvolutionTimelineProps> = ({ playClickS
         <div className="text-center mb-16 sm:mb-20 reveal-on-scroll">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-mono font-bold tracking-widest text-[#00F2FE] bg-[#00F2FE]/10 border border-[#00F2FE]/30 uppercase mb-4 shadow-[0_0_15px_rgba(0,242,254,0.2)]">
             <span className="w-2 h-2 rounded-full bg-[#00F2FE] animate-pulse" />
-            <span>COMMERCE EVOLUTION // 2023 - 2026</span>
+            <span>{t.journey.badge}</span>
           </div>
 
           <h2 className="font-heading text-3xl sm:text-5xl lg:text-6xl font-black text-white tracking-[0.08em] uppercase">
-            EVOLUTION <span className="bg-gradient-to-r from-[#00F2FE] via-[#A855F7] to-[#C084FC] bg-clip-text text-transparent">TIMELINE</span>
+            {t.journey.title}{' '}
+            <span className="bg-gradient-to-r from-[#00F2FE] via-[#A855F7] to-[#C084FC] bg-clip-text text-transparent">
+              {t.journey.titleHighlight}
+            </span>
           </h2>
 
           <p className="text-sm sm:text-base text-[#A0A0AB] max-w-2xl mx-auto mt-4 leading-relaxed font-sans">
-            My professional journey from managing international e-commerce operations to mastering AI-driven digital product engineering.
+            {t.journey.subtitle}
           </p>
 
           {/* Quick-Jump Stage Pills */}
           <div className="flex flex-wrap items-center justify-center gap-2 mt-8">
-            {JOURNEY_MILESTONES.map((m, idx) => {
+            {milestones.map((m, idx) => {
               const isSelected = activeStage === idx;
               const isPurple = idx % 2 === 1;
 
@@ -332,12 +357,12 @@ export const EvolutionTimeline: React.FC<EvolutionTimelineProps> = ({ playClickS
           {/* Spine Traveling Ambient Energy Pulse (subtle floating glow) */}
           <div
             className="absolute left-6 sm:left-1/2 -translate-x-1/2 w-3 h-20 rounded-full bg-gradient-to-b from-transparent via-[#00F2FE] to-transparent blur-sm pointer-events-none opacity-80 animate-pulse z-0"
-            style={{ top: `${(activeStage / (JOURNEY_MILESTONES.length - 1)) * 80 + 5}%`, transition: 'top 0.8s cubic-bezier(0.16, 1, 0.3, 1)' }}
+            style={{ top: `${(activeStage / (milestones.length - 1)) * 80 + 5}%`, transition: 'top 0.8s cubic-bezier(0.16, 1, 0.3, 1)' }}
           />
 
           {/* Milestones Container */}
           <div className="space-y-16 sm:space-y-24 relative z-10">
-            {JOURNEY_MILESTONES.map((milestone, index) => {
+            {milestones.map((milestone, index) => {
               const isEven = index % 2 === 0;
               const isSelected = activeStage === index;
               const isPurple = index % 2 === 1;

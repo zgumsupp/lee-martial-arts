@@ -14,12 +14,14 @@ import {
 } from 'lucide-react';
 import { TESTIMONIALS } from '../data/portfolioData';
 import { Testimonial } from '../types';
+import { useLanguage } from '../context/LanguageContext';
 
 interface TestimonialsSectionProps {
   playClickSound?: () => void;
 }
 
 export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({ playClickSound }) => {
+  const { t } = useLanguage();
   const [viewMode, setViewMode] = useState<'marquee' | 'grid'>('marquee');
   const [isPaused, setIsPaused] = useState<boolean>(false);
 
@@ -33,12 +35,16 @@ export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({ playCl
     setIsPaused(!isPaused);
   };
 
-  const renderReviewCard = (t: Testimonial, idx: number, isGrid = false) => {
+  const renderReviewCard = (item: Testimonial, idx: number, isGrid = false) => {
     const isPurple = idx % 2 === 1;
+    const testT = t.testimonials.items.find((ti) => ti.id === item.id);
+    const content = testT?.content || item.quote;
+    const role = testT?.role || item.role;
+    const metric = testT?.metrics || item.impact;
 
     return (
       <div
-        key={`${t.id}-${idx}`}
+        key={`${item.id}-${idx}`}
         className={`relative group rounded-2xl p-6 sm:p-7 backdrop-blur-md flex flex-col justify-between transition-all duration-300 ${
           isGrid ? 'w-full' : 'w-[360px] sm:w-[420px] shrink-0'
         } ${
@@ -64,7 +70,7 @@ export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({ playCl
             <div className="flex items-center gap-1.5">
               {/* 5 Small Glowing Stars */}
               <div className="flex items-center gap-1">
-                {[...Array(t.rating)].map((_, starIdx) => (
+                {[...Array(item.rating)].map((_, starIdx) => (
                   <Star
                     key={starIdx}
                     className="w-3.5 h-3.5 fill-[#FBBF24] text-[#FBBF24] drop-shadow-[0_0_8px_rgba(251,191,36,0.8)]"
@@ -82,7 +88,7 @@ export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({ playCl
                   : 'bg-[#00F2FE]/10 border-[#00F2FE]/30 text-[#00F2FE]'
               }`}
             >
-              {t.projectDomain || 'SaaS Flagship'}
+              {item.projectDomain || 'SaaS Flagship'}
             </span>
           </div>
 
@@ -94,7 +100,7 @@ export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({ playCl
               }`}
             />
             <p className="text-sm text-white/90 leading-relaxed font-sans relative z-10 italic pl-1">
-              &ldquo;{t.quote}&rdquo;
+              &ldquo;{content}&rdquo;
             </p>
           </div>
 
@@ -119,7 +125,7 @@ export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({ playCl
               </span>
             </div>
             <p className="text-xs text-white/90 font-medium leading-snug">
-              {t.impact}
+              {metric}
             </p>
           </div>
         </div>
@@ -129,8 +135,8 @@ export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({ playCl
           <div className="flex items-center gap-3">
             <div className="relative">
               <img
-                src={t.avatar}
-                alt={t.clientName}
+                src={item.avatar}
+                alt={item.clientName}
                 className={`w-11 h-11 rounded-full object-cover border ${
                   isPurple
                     ? 'border-[#A855F7]/50 shadow-[0_0_12px_rgba(168,85,247,0.35)]'
@@ -149,7 +155,7 @@ export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({ playCl
 
             <div>
               <h4 className="text-sm font-bold text-white flex items-center gap-1.5">
-                <span>{t.clientName}</span>
+                <span>{item.clientName}</span>
                 <CheckCircle2
                   className={`w-3.5 h-3.5 flex-shrink-0 ${
                     isPurple ? 'text-[#C084FC]' : 'text-[#00F2FE]'
@@ -157,7 +163,7 @@ export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({ playCl
                 />
               </h4>
               <p className="text-xs text-white/50 leading-tight">
-                {t.role} • <span className="text-white/75">{t.company}</span>
+                {role} • <span className="text-white/75">{item.company}</span>
               </p>
             </div>
           </div>
@@ -181,15 +187,15 @@ export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({ playCl
         <div className="text-center mb-12 sm:mb-16 reveal-on-scroll">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-mono font-bold tracking-widest text-[#00F2FE] bg-[#00F2FE]/10 border border-[#00F2FE]/30 uppercase mb-4 shadow-[0_0_15px_rgba(0,242,254,0.2)]">
             <Award className="w-3.5 h-3.5 text-[#00F2FE]" />
-            <span>VERIFIED REPUTATION &amp; CLIENT PROOF</span>
+            <span>{t.testimonials.badge}</span>
           </div>
 
           <h2 className="font-heading text-3xl sm:text-5xl lg:text-6xl font-black text-white tracking-[0.08em] uppercase">
-            CLIENT REVIEWS &amp; <span className="bg-gradient-to-r from-[#00F2FE] via-[#A855F7] to-[#C084FC] bg-clip-text text-transparent">TESTIMONIALS</span>
+            {t.testimonials.title} <span className="bg-gradient-to-r from-[#00F2FE] via-[#A855F7] to-[#C084FC] bg-clip-text text-transparent">{t.testimonials.titleHighlight}</span>
           </h2>
 
           <p className="text-sm sm:text-base text-[#A0A0AB] max-w-2xl mx-auto mt-4 leading-relaxed font-sans">
-            Direct feedback from international e-commerce brand owners, marketplace sellers, and store founders who partnered with Anzil for growth.
+            {t.testimonials.subtitle}
           </p>
 
           {/* Social Proof Metric Highlights */}
@@ -277,8 +283,8 @@ export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({ playCl
                   animationPlayState: isPaused ? 'paused' : undefined,
                 }}
               >
-                {[...TESTIMONIALS, ...TESTIMONIALS].map((t, idx) =>
-                  renderReviewCard(t, idx, false)
+                {[...TESTIMONIALS, ...TESTIMONIALS].map((item, idx) =>
+                  renderReviewCard(item, idx, false)
                 )}
               </div>
 
@@ -290,7 +296,7 @@ export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({ playCl
           ) : (
             /* View 2: Beautifully Stacked Proof Grid */
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 animate-fadeIn">
-              {TESTIMONIALS.map((t, idx) => renderReviewCard(t, idx, true))}
+              {TESTIMONIALS.map((item, idx) => renderReviewCard(item, idx, true))}
             </div>
           )}
         </div>

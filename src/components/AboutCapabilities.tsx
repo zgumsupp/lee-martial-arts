@@ -12,6 +12,7 @@ import {
 } from 'lucide-react';
 import { MagneticButton } from './MagneticButton';
 import { CAPABILITIES, PERSONAL_INFO } from '../data/portfolioData';
+import { useLanguage } from '../context/LanguageContext';
 
 const getIcon = (iconName: string, theme: 'cyan' | 'purple' | 'amber') => {
   const colorClass =
@@ -134,6 +135,7 @@ interface CardSparkleParticle {
 }
 
 export const AboutCapabilities: React.FC<AboutCapabilitiesProps> = ({ playClickSound }) => {
+  const { t } = useLanguage();
   const [activeFilter, setActiveFilter] = useState<string>('ALL');
   const [isAboutRevealed, setIsAboutRevealed] = useState<boolean>(false);
   const aboutSectionRef = useRef<HTMLElement | null>(null);
@@ -322,6 +324,16 @@ export const AboutCapabilities: React.FC<AboutCapabilitiesProps> = ({ playClickS
     'FULLSTACK',
     'OPTIMIZATION',
   ];
+
+  const categoryLabels: Record<string, string> = {
+    ALL: t.capabilities.categories.all,
+    PERFORMANCE: t.capabilities.categories.performance,
+    ARCHITECTURE: t.capabilities.categories.architecture,
+    VELOCITY: t.capabilities.categories.velocity,
+    IMMERSION: t.capabilities.categories.immersion,
+    FULLSTACK: t.capabilities.categories.fullstack,
+    OPTIMIZATION: t.capabilities.categories.optimization,
+  };
 
   return (
     <div className="space-y-24">
@@ -619,13 +631,16 @@ export const AboutCapabilities: React.FC<AboutCapabilitiesProps> = ({ playClickS
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
           <div className="text-center mb-12 reveal-on-scroll">
             <span className="inline-block px-3.5 py-1 rounded-full text-xs font-mono font-bold tracking-widest text-[#00F2FE] bg-[#00F2FE]/10 border border-[#00F2FE]/30 uppercase mb-3 shadow-[0_0_15px_rgba(0,242,254,0.2)]">
-              SYSTEM ARCHITECTURE &amp; SKILLS
+              {t.capabilities.badge}
             </span>
             <h2 className="font-heading text-3xl sm:text-5xl font-black text-white tracking-[0.12em]">
-              CORE CAPABILITIES
+              {t.capabilities.title}{' '}
+              <span className="bg-gradient-to-r from-[#00F2FE] via-[#A855F7] to-[#C084FC] bg-clip-text text-transparent">
+                {t.capabilities.titleHighlight}
+              </span>
             </h2>
             <p className="text-sm sm:text-base text-[#A0A0AB] max-w-xl mx-auto mt-3">
-              Precision engineering applied across high-performance interfaces, 3D WebGL immersion, and next-gen AI workflows.
+              {t.capabilities.subtitle}
             </p>
 
             {/* Category Filter Chips */}
@@ -643,7 +658,7 @@ export const AboutCapabilities: React.FC<AboutCapabilitiesProps> = ({ playClickS
                       : 'bg-[#090F1C]/60 text-white/70 hover:text-white hover:bg-white/[0.08] hover:border-[#A855F7]/40 border border-white/10 backdrop-blur-md'
                   }`}
                 >
-                  {cat}
+                  {categoryLabels[cat] || cat}
                 </button>
               ))}
             </div>
@@ -654,6 +669,12 @@ export const AboutCapabilities: React.FC<AboutCapabilitiesProps> = ({ playClickS
             {filteredCapabilities.map((cap, idx) => {
               const isAmber = cap.accentColor === 'amber';
               const isPurple = !isAmber && idx % 2 === 1;
+              const capT = t.capabilities.items.find((item) => item.id === cap.id);
+              const cardTitle = capT?.title || cap.title;
+              const cardBadge = capT?.badge || cap.badge;
+              const cardDescription = capT?.description || cap.description;
+              const cardMetrics = capT?.metrics || cap.metrics;
+              const cardTags = capT?.tags || cap.tags;
 
               return (
                 <div
@@ -724,14 +745,14 @@ export const AboutCapabilities: React.FC<AboutCapabilitiesProps> = ({ playClickS
                                 : 'bg-[#00F2FE]/10 border-[#00F2FE]/30 text-[#00F2FE] shadow-[0_0_10px_rgba(0,242,254,0.2)]'
                             }`}
                           >
-                            {cap.badge}
+                            {cardBadge}
                           </span>
                         </div>
 
                         {/* Title & Metrics */}
                         <div>
                           <h3 className="text-xl font-bold text-white tracking-wide transition-all duration-300 leading-snug mb-2.5 group-hover/skill:text-transparent group-hover/skill:bg-clip-text group-hover/skill:bg-gradient-to-r group-hover/skill:from-white group-hover/skill:via-[#00F2FE] group-hover/skill:to-[#A855F7]">
-                            {cap.title}
+                            {cardTitle}
                           </h3>
 
                           {/* Metric pill */}
@@ -741,18 +762,18 @@ export const AboutCapabilities: React.FC<AboutCapabilitiesProps> = ({ playClickS
                                 isPurple ? 'text-[#C084FC]' : isAmber ? 'text-[#F59E0B]' : 'text-[#00F2FE]'
                               }`}
                             />
-                            <span className="text-white/85">{cap.metrics}</span>
+                            <span className="text-white/85">{cardMetrics}</span>
                           </div>
 
                           <p className="text-sm text-[#A0A0AB] leading-relaxed mb-6 font-normal">
-                            {cap.description}
+                            {cardDescription}
                           </p>
                         </div>
                       </div>
 
                       {/* Tags Footer */}
                       <div className="pt-4 border-t border-white/10 flex flex-wrap gap-2 items-center relative z-10">
-                        {cap.tags.map((tag) => (
+                        {cardTags.map((tag) => (
                           <span
                             key={tag}
                             className="text-[11px] font-mono px-2.5 py-1 rounded-md bg-white/[0.04] text-white/70 border border-white/10 hover:border-white/25 transition-colors"

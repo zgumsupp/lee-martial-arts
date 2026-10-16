@@ -5,17 +5,27 @@ import { MagneticButton } from './MagneticButton';
 import { ProjectModal } from './ProjectModal';
 import { FEATURED_WORKS } from '../data/portfolioData';
 import { ProjectWork } from '../types';
+import { useLanguage } from '../context/LanguageContext';
 
 interface FeaturedWorksProps {
   playClickSound: () => void;
 }
 
 export const FeaturedWorks: React.FC<FeaturedWorksProps> = ({ playClickSound }) => {
+  const { t } = useLanguage();
   const [selectedCategory, setSelectedCategory] = useState<string>('ALL');
   const [activeModalProject, setActiveModalProject] = useState<ProjectWork | null>(null);
   const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
 
   const categories = ['ALL', 'E-Commerce', 'Digital Assets', 'Storefront Design', 'Marketplace Ops'];
+
+  const categoryLabels: Record<string, string> = {
+    ALL: t.works.categories.all,
+    'E-Commerce': t.works.categories.ecommerce,
+    'Digital Assets': t.works.categories.digitalAssets,
+    'Storefront Design': t.works.categories.storefrontDesign,
+    'Marketplace Ops': 'Marketplace Ops',
+  };
 
   const filteredProjects =
     selectedCategory === 'ALL'
@@ -48,13 +58,16 @@ export const FeaturedWorks: React.FC<FeaturedWorksProps> = ({ playClickSound }) 
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-14 gap-6 reveal-on-scroll">
           <div>
             <span className="inline-block px-3.5 py-1 rounded-full text-xs font-mono font-bold tracking-widest text-[#00F2FE] bg-[#00F2FE]/10 border border-[#00F2FE]/30 uppercase mb-3">
-              CURATED PRODUCTION REEL
+              {t.works.badge}
             </span>
             <h2 className="font-heading text-3xl sm:text-5xl font-black text-white tracking-[0.12em]">
-              FEATURED WORKS
+              {t.works.title}{' '}
+              <span className="bg-gradient-to-r from-[#00F2FE] via-[#A855F7] to-[#C084FC] bg-clip-text text-transparent">
+                {t.works.titleHighlight}
+              </span>
             </h2>
             <p className="text-sm sm:text-base text-[#A0A0AB] max-w-xl mt-2">
-              High-converting flagship landing pages, AI software platforms, and spatial WebGL digital canvases.
+              {t.works.subtitle}
             </p>
           </div>
 
@@ -67,13 +80,13 @@ export const FeaturedWorks: React.FC<FeaturedWorksProps> = ({ playClickSound }) 
                   playClickSound();
                   setSelectedCategory(cat);
                 }}
-                className={`px-3.5 py-1.5 rounded-full text-xs font-mono font-semibold transition-all duration-200 ${
+                className={`px-3.5 py-1.5 rounded-full text-xs font-mono font-semibold transition-all duration-200 cursor-pointer ${
                   selectedCategory === cat
                     ? 'bg-gradient-to-r from-[#00F2FE] via-[#0EA5E9] to-[#A855F7] text-[#050811] font-black shadow-[0_0_20px_rgba(0,242,254,0.45)] border border-cyan-300/40'
                     : 'bg-[#090F1C]/60 text-white/70 hover:text-white hover:bg-white/[0.08] hover:border-[#A855F7]/40 border border-white/10 backdrop-blur-md'
                 }`}
               >
-                {cat}
+                {categoryLabels[cat] || cat}
               </button>
             ))}
           </div>
@@ -83,6 +96,12 @@ export const FeaturedWorks: React.FC<FeaturedWorksProps> = ({ playClickSound }) 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {filteredProjects.map((project, index) => {
             const isPurpleCard = index % 2 === 1;
+            const projT = t.works.items.find((item) => item.id === project.id);
+            const cardTitle = projT?.title || project.title;
+            const cardTagline = projT?.tagline || project.tagline;
+            const cardDescription = projT?.description || project.description;
+            const cardTags = projT?.tags || project.tags;
+
             return (
               <div
                 key={project.id}
@@ -97,14 +116,20 @@ export const FeaturedWorks: React.FC<FeaturedWorksProps> = ({ playClickSound }) 
                   className="overflow-hidden flex flex-col h-full group cursor-pointer"
                   onClick={() => {
                     playClickSound();
-                    setActiveModalProject(project);
+                    setActiveModalProject({
+                      ...project,
+                      title: cardTitle,
+                      tagline: cardTagline,
+                      description: cardDescription,
+                      tags: cardTags,
+                    });
                   }}
                 >
                   {/* Visual Image Banner with Parallax Zoom */}
                   <div className="relative h-60 sm:h-72 w-full overflow-hidden bg-black/40">
                     <img
                       src={project.image}
-                      alt={project.title}
+                      alt={cardTitle}
                       className="w-full h-full object-cover object-center group-hover:scale-110 group-hover:brightness-110 transition-all duration-700 ease-out"
                       referrerPolicy="no-referrer"
                     />
@@ -140,7 +165,7 @@ export const FeaturedWorks: React.FC<FeaturedWorksProps> = ({ playClickSound }) 
                             isPurpleCard ? 'group-hover:text-[#C084FC]' : 'group-hover:text-[#00F2FE]'
                           }`}
                         >
-                          {project.title}
+                          {cardTitle}
                         </h3>
                         <ArrowUpRight
                           className={`w-5 h-5 text-white/40 transition-all ${
@@ -156,11 +181,11 @@ export const FeaturedWorks: React.FC<FeaturedWorksProps> = ({ playClickSound }) 
                           isPurpleCard ? 'text-[#C084FC]/90' : 'text-[#00F2FE]/90'
                         }`}
                       >
-                        {project.tagline}
+                        {cardTagline}
                       </p>
 
                       <p className="text-xs sm:text-sm text-[#A0A0AB] line-clamp-2 leading-relaxed mb-6">
-                        {project.description}
+                        {cardDescription}
                       </p>
                     </div>
 
@@ -181,7 +206,7 @@ export const FeaturedWorks: React.FC<FeaturedWorksProps> = ({ playClickSound }) 
 
                       {/* Tags */}
                       <div className="flex flex-wrap gap-1.5 pt-2 border-t border-white/10">
-                        {project.tags.map((tag) => (
+                        {cardTags.map((tag) => (
                           <span
                             key={tag}
                             className="text-[10px] font-mono px-2 py-0.5 rounded bg-white/[0.04] text-white/60 border border-white/5"

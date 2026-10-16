@@ -16,6 +16,7 @@ import {
 } from 'lucide-react';
 import { GlassCard } from './GlassCard';
 import { PERSONAL_INFO } from '../data/portfolioData';
+import { useLanguage } from '../context/LanguageContext';
 
 interface ContactSectionProps {
   playClickSound: () => void;
@@ -32,6 +33,7 @@ interface Particle {
 }
 
 export const ContactSection: React.FC<ContactSectionProps> = ({ playClickSound }) => {
+  const { t } = useLanguage();
   const [copied, setCopied] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [focusedField, setFocusedField] = useState<string | null>(null);
@@ -41,8 +43,8 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ playClickSound }
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    projectType: 'Etsy Digital Storefront Design',
-    budget: '$100 — $250',
+    projectType: '',
+    budget: '',
     message: '',
   });
 
@@ -109,15 +111,15 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ playClickSound }
             <div className="lg:col-span-5 flex flex-col justify-between min-w-0">
               <div>
                 <span className="inline-block px-3.5 py-1 rounded-full text-xs font-mono font-bold tracking-widest text-[#00F2FE] bg-[#00F2FE]/10 border border-[#00F2FE]/30 uppercase mb-4 shadow-[0_0_15px_rgba(0,242,254,0.2)]">
-                  INITIATE COLLABORATION
+                  {t.contact.badge}
                 </span>
                 <div className="flex flex-col max-w-full mb-4">
                   <h2 className="font-heading text-xl sm:text-2xl font-bold text-white tracking-tight leading-snug drop-shadow-[0_0_20px_rgba(0,242,254,0.25)]">
-                    LAUNCH YOUR NEXT DIGITAL ASSET 🚀
+                    {t.contact.heading}
                   </h2>
                 </div>
                 <p className="text-sm sm:text-base text-[#A0A0AB] leading-relaxed mb-8">
-                  Specializing in designing high-converting Etsy digital product storefronts and engineering modern, fast-loading web layouts using advanced AI vibe coding workflows.
+                  {t.contact.subtitle}
                 </p>
 
                 {/* Direct Email Card with Quick Copy */}
@@ -128,7 +130,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ playClickSound }
                     </div>
                     <div className="overflow-hidden">
                       <span className="text-[10px] font-mono text-white/40 uppercase block">
-                        DIRECT INBOX
+                        {t.contact.directInbox}
                       </span>
                       <span className="text-xs sm:text-sm font-mono font-semibold text-white truncate block">
                         {PERSONAL_INFO.email}
@@ -159,11 +161,11 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ playClickSound }
                       <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-400 shadow-[0_0_10px_#22C55E]" />
                     </div>
                     <span className="text-xs sm:text-sm font-mono font-bold text-emerald-400 tracking-wide uppercase">
-                      Available for Work
+                      {t.contact.availableBadge}
                     </span>
                   </div>
                   <p className="text-xs text-white/50 font-mono pl-6 leading-relaxed">
-                    Based in Pakistan • Seamless 24/7 Global Timezone Coverage
+                    {t.contact.locationNote}
                   </p>
                 </div>
               </div>
@@ -171,7 +173,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ playClickSound }
               {/* Social links (GitHub, LinkedIn, Twitter) - Aligned perfectly */}
               <div className="pt-8 mt-8 border-t border-white/10">
                 <span className="text-[10px] font-mono uppercase tracking-wider text-white/40 block mb-3">
-                  NETWORK MATRIX
+                  {t.contact.networkMatrix}
                 </span>
                 <div className="flex items-center gap-3">
                   <a
@@ -214,17 +216,17 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ playClickSound }
                       <Check className="w-8 h-8" />
                     </div>
                     <h3 className="text-2xl sm:text-3xl font-bold text-white tracking-tight">
-                      Message Dispatched Successfully!
+                      {t.contact.form.successTitle}
                     </h3>
                     <p className="text-sm text-[#A0A0AB] max-w-md mx-auto leading-relaxed">
-                      Thank you. Your project brief has been transmitted directly to Anzil. Expect an architectural consultation response within 12 hours.
+                      {t.contact.form.successDesc}
                     </p>
                     <button
                       type="button"
                       onClick={() => setSubmitted(false)}
                       className="px-6 py-2.5 rounded-full bg-white/10 text-xs font-mono font-bold text-white hover:bg-white/20 border border-white/15 transition-all cursor-pointer shadow-[0_0_15px_rgba(255,255,255,0.1)]"
                     >
-                      Send Another Inquiry
+                      {t.contact.form.resetBtn}
                     </button>
                   </div>
                 ) : (
@@ -250,7 +252,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ playClickSound }
                               : 'top-4 text-xs text-white/40 tracking-wide'
                           }`}
                         >
-                          Your Name *
+                          {t.contact.form.nameLabel} *
                         </label>
                       </div>
 
@@ -274,7 +276,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ playClickSound }
                               : 'top-4 text-xs text-white/40 tracking-wide'
                           }`}
                         >
-                          Your Email Address *
+                          {t.contact.form.emailLabel} *
                         </label>
                       </div>
                     </div>
@@ -286,18 +288,19 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ playClickSound }
                           htmlFor="contact-project-type"
                           className="absolute left-4 top-2 text-[10px] font-mono font-bold text-[#00F2FE] uppercase tracking-wider pointer-events-none"
                         >
-                          Project Architecture
+                          {t.contact.form.projectTypeLabel}
                         </label>
                         <select
                           id="contact-project-type"
-                          value={formData.projectType}
+                          value={formData.projectType || t.contact.form.projectTypes[0]}
                           onChange={(e) => setFormData({ ...formData, projectType: e.target.value })}
                           className="w-full px-4 pt-6 pb-2 bg-transparent text-white text-sm outline-none cursor-pointer [&>option]:bg-[#070B14] [&>option]:text-white font-sans"
                         >
-                          <option value="Etsy Digital Storefront Design">Etsy Digital Storefront Design</option>
-                          <option value="Vibe Coding Website Setup">Vibe Coding Website Setup</option>
-                          <option value="Digital Product Template Creation">Digital Product Template Creation</option>
-                          <option value="Custom Web Layout Refinement">Custom Web Layout Refinement</option>
+                          {t.contact.form.projectTypes.map((type) => (
+                            <option key={type} value={type}>
+                              {type}
+                            </option>
+                          ))}
                         </select>
                       </div>
 
@@ -307,18 +310,19 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ playClickSound }
                           htmlFor="contact-budget"
                           className="absolute left-4 top-2 text-[10px] font-mono font-bold text-[#00F2FE] uppercase tracking-wider pointer-events-none"
                         >
-                          Estimated Budget
+                          {t.contact.form.budgetLabel}
                         </label>
                         <select
                           id="contact-budget"
-                          value={formData.budget}
+                          value={formData.budget || t.contact.form.budgetOptions[0]}
                           onChange={(e) => setFormData({ ...formData, budget: e.target.value })}
                           className="w-full px-4 pt-6 pb-2 bg-transparent text-white text-sm outline-none cursor-pointer [&>option]:bg-[#070B14] [&>option]:text-white font-sans"
                         >
-                          <option value="$100 — $250">$100 — $250</option>
-                          <option value="$250 — $500">$250 — $500</option>
-                          <option value="$500 — $1,000">$500 — $1,000</option>
-                          <option value="$1,000+">$1,000+</option>
+                          {t.contact.form.budgetOptions.map((opt) => (
+                            <option key={opt} value={opt}>
+                              {opt}
+                            </option>
+                          ))}
                         </select>
                       </div>
                     </div>
@@ -329,7 +333,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ playClickSound }
                         id="contact-message"
                         required
                         rows={4}
-                        placeholder="PROJECT SCOPE, TIMELINE & GOALS *"
+                        placeholder={t.contact.form.messagePlaceholder}
                         value={formData.message}
                         onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                         className="w-full px-4 py-3.5 bg-transparent text-white text-sm outline-none font-sans resize-none placeholder:text-white/40 placeholder:font-mono placeholder:text-xs"
@@ -368,7 +372,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ playClickSound }
                         <div className="absolute inset-0 w-1/2 h-full bg-gradient-to-r from-transparent via-white/45 to-transparent -skew-x-12 -translate-x-full group-hover:translate-x-[320%] transition-transform duration-1000 ease-in-out pointer-events-none" />
 
                         <Send className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-0.5" />
-                        <span className="relative z-10 font-bold">Send Message</span>
+                        <span className="relative z-10 font-bold">{t.contact.form.submitBtn}</span>
                         <Zap className="w-3.5 h-3.5 text-amber-300 transition-transform duration-300 group-hover:scale-125" />
                       </button>
                     </div>
@@ -431,32 +435,32 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ playClickSound }
             <ul className="space-y-2 text-xs text-[#A0A0AB]">
               <li>
                 <a href="#about" className="hover:text-[#00F2FE] transition-colors">
-                  About Anzil
+                  {t.nav.about}
                 </a>
               </li>
               <li>
                 <a href="#capabilities" className="hover:text-[#00F2FE] transition-colors">
-                  Core Capabilities
+                  {t.nav.capabilities}
                 </a>
               </li>
               <li>
                 <a href="#journey" className="hover:text-[#00F2FE] transition-colors">
-                  Evolution Journey
+                  {t.nav.journey}
                 </a>
               </li>
               <li>
                 <a href="#vibe-matrix" className="hover:text-[#00F2FE] transition-colors">
-                  Vibe Matrix
+                  {t.nav.vibeMatrix}
                 </a>
               </li>
               <li>
                 <a href="#works" className="hover:text-[#00F2FE] transition-colors">
-                  Featured Works
+                  {t.nav.works}
                 </a>
               </li>
               <li>
                 <a href="#reviews" className="hover:text-[#00F2FE] transition-colors">
-                  Client Reviews
+                  {t.nav.reviews}
                 </a>
               </li>
             </ul>
@@ -487,7 +491,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ playClickSound }
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400 shadow-[0_0_8px_#22C55E]" />
               </div>
               <span className="text-xs font-mono font-bold text-emerald-400 uppercase tracking-wider">
-                Available for Work
+                {t.contact.availableBadge}
               </span>
             </div>
             <p className="text-xs text-white/50 font-mono">
@@ -511,7 +515,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ playClickSound }
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400 shadow-[0_0_6px_#22C55E]" />
               </span>
-              <span className="font-semibold text-[11px]">Available for Work</span>
+              <span className="font-semibold text-[11px]">{t.contact.availableBadge}</span>
             </div>
           </div>
 

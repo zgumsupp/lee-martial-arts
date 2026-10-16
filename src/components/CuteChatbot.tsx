@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Send, X, Sparkles, MessageCircle, ArrowUpRight, CheckCheck } from 'lucide-react';
+import { useLanguage } from '../context/LanguageContext';
 
 interface Message {
   id: string;
@@ -13,6 +14,7 @@ interface CuteChatbotProps {
 }
 
 export const CuteChatbot: React.FC<CuteChatbotProps> = ({ playClickSound }) => {
+  const { t, language } = useLanguage();
   const [isOpen, setIsOpen] = useState(false);
   const [inputValue, setInputValue] = useState('');
   const [isTyping, setIsTyping] = useState(false);
@@ -20,22 +22,24 @@ export const CuteChatbot: React.FC<CuteChatbotProps> = ({ playClickSound }) => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
-  const initialGreeting = "Hi, I'm Anzil's digital helper! Let's talk about your next web project, custom interactive micro-tools, or Etsy digital storefront design layouts.";
-
   const [messages, setMessages] = useState<Message[]>([
     {
       id: 'msg-init',
       sender: 'bot',
-      text: initialGreeting,
+      text: t.chatbot.initialGreeting,
       timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
     },
   ]);
 
-  const quickPrompts = [
-    'AI Vibe Coding ⚡',
-    'Digital Products & Tools 📂',
-    'Etsy Storefront Design 🎨',
-  ];
+  useEffect(() => {
+    setMessages((prev) =>
+      prev.map((m) =>
+        m.id === 'msg-init' ? { ...m, text: t.chatbot.initialGreeting } : m
+      )
+    );
+  }, [language, t.chatbot.initialGreeting]);
+
+  const quickPrompts = t.chatbot.quickPrompts;
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -53,19 +57,19 @@ export const CuteChatbot: React.FC<CuteChatbotProps> = ({ playClickSound }) => {
 
   const getBotReply = (userQuery: string): string => {
     const q = userQuery.toLowerCase();
-    if (q.includes('etsy') || q.includes('store') || q.includes('product')) {
-      return "Anzil specializes in end-to-end Etsy digital product storefronts — from niche research and high-converting mockup assets to SEO-optimized listing copy and automated digital delivery setups!";
+    if (q.includes('etsy') || q.includes('store') || q.includes('product') || q.includes('쇼핑몰') || q.includes('ストア') || q.includes('متجر') || q.includes('shop')) {
+      return t.chatbot.botResponses.etsy;
     }
-    if (q.includes('vibe') || q.includes('code') || q.includes('web') || q.includes('site')) {
-      return "Using next-gen AI vibe coding workflows, Anzil engineers responsive, high-performance web flagships in 24 to 72 hours with dark glassmorphism and 60 FPS micro-interactions.";
+    if (q.includes('vibe') || q.includes('code') || q.includes('web') || q.includes('site') || q.includes('개발') || q.includes('開発') || q.includes('موقع') || q.includes('webseite')) {
+      return t.chatbot.botResponses.vibe;
     }
-    if (q.includes('time') || q.includes('turnaround') || q.includes('fast') || q.includes('long')) {
-      return "Standard turnarounds range from 24 to 72 hours for initial storefront setups, and 3-5 days for comprehensive full-stack digital flagship builds.";
+    if (q.includes('time') || q.includes('turnaround') || q.includes('fast') || q.includes('long') || q.includes('speed') || q.includes('기간') || q.includes('期間') || q.includes('مدة') || q.includes('zeit')) {
+      return t.chatbot.botResponses.speed;
     }
-    if (q.includes('price') || q.includes('cost') || q.includes('budget') || q.includes('hire') || q.includes('contact')) {
-      return "You can reach Anzil directly at anzilhayat.ecom@gmail.com or fill out the dispatch form at the bottom of the page. Packages start from $100!";
+    if (q.includes('price') || q.includes('cost') || q.includes('budget') || q.includes('hire') || q.includes('contact') || q.includes('가격') || q.includes('비용') || q.includes('価格') || q.includes('料金') || q.includes('سعر') || q.includes('kosten')) {
+      return t.chatbot.botResponses.hire;
     }
-    return "Thank you for reaching out! Anzil is available for global projects. Feel free to leave your contact details or email anzilhayat.ecom@gmail.com to get started!";
+    return t.chatbot.botResponses.default;
   };
 
   const handleSendMessage = (textToSend?: string) => {
@@ -226,7 +230,7 @@ export const CuteChatbot: React.FC<CuteChatbotProps> = ({ playClickSound }) => {
                 <div>
                   <div className="flex items-center gap-1.5">
                     <h3 className="font-heading font-black text-xs sm:text-sm tracking-wider text-white">
-                      ANZIL HELPER
+                      {t.chatbot.headerTitle}
                     </h3>
                     <span className="text-[10px] px-1.5 py-0.2 rounded bg-[#00F2FE]/15 border border-[#00F2FE]/30 text-[#00F2FE] font-mono font-bold">
                       AI ⚡
@@ -234,7 +238,7 @@ export const CuteChatbot: React.FC<CuteChatbotProps> = ({ playClickSound }) => {
                   </div>
                   <p className="text-[10px] font-mono text-emerald-400 flex items-center gap-1 mt-0.5">
                     <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping inline-block" />
-                    Online • AI Vibe Coding Specialist
+                    {t.chatbot.statusOnline}
                   </p>
                 </div>
               </div>
@@ -318,7 +322,7 @@ export const CuteChatbot: React.FC<CuteChatbotProps> = ({ playClickSound }) => {
                   value={inputValue}
                   onChange={(e) => setInputValue(e.target.value)}
                   onKeyDown={handleKeyDown}
-                  placeholder="Type your message here..."
+                  placeholder={t.chatbot.inputPlaceholder}
                   rows={2}
                   className="w-full bg-[#0B1020]/90 border border-white/12 focus:border-[#00F2FE]/60 rounded-xl px-3 py-2 text-xs text-white placeholder-white/40 focus:outline-none resize-none focus:ring-1 focus:ring-[#00F2FE]/40 transition-all font-sans leading-relaxed"
                 />
@@ -336,7 +340,7 @@ export const CuteChatbot: React.FC<CuteChatbotProps> = ({ playClickSound }) => {
                         : 'bg-white/[0.06] text-white/30 border border-white/10 cursor-not-allowed'
                     }`}
                   >
-                    <span>Send Message</span>
+                    <span>{t.contact.form.submitBtn}</span>
                     <Send className="w-3.5 h-3.5" />
                   </button>
                 </div>

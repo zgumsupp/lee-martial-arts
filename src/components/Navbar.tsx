@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Sparkles, Menu, X, ArrowUpRight, Volume2, VolumeX } from 'lucide-react';
 import { MagneticButton } from './MagneticButton';
+import { LanguageSelector } from './LanguageSelector';
+import { useLanguage } from '../context/LanguageContext';
 
 interface NavbarProps {
   soundEnabled: boolean;
@@ -13,18 +15,19 @@ export const Navbar: React.FC<NavbarProps> = ({
   onToggleSound,
   playClickSound,
 }) => {
+  const { t } = useLanguage();
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('hero');
 
   const navLinks = [
-    { label: 'About', href: '#about' },
-    { label: 'Capabilities', href: '#capabilities' },
-    { label: 'Journey', href: '#journey' },
-    { label: 'Vibe Matrix', href: '#vibe-matrix' },
-    { label: 'Featured Works', href: '#works' },
-    { label: 'Reviews', href: '#reviews' },
-    { label: 'Contact', href: '#contact' },
+    { label: t.nav.about, href: '#about' },
+    { label: t.nav.capabilities, href: '#capabilities' },
+    { label: t.nav.journey, href: '#journey' },
+    { label: t.nav.vibeMatrix, href: '#vibe-matrix' },
+    { label: t.nav.works, href: '#works' },
+    { label: t.nav.reviews, href: '#reviews' },
+    { label: t.nav.contact, href: '#contact' },
   ];
 
   useEffect(() => {
@@ -63,8 +66,8 @@ export const Navbar: React.FC<NavbarProps> = ({
             : 'bg-[#080E1C]/65 backdrop-blur-2xl border-white/12 shadow-[0_12px_40px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.14)]'
         }`}
       >
-        {/* Left Side: Brand Logo & Portfolio Matrix Capsule Pill Badge */}
-        <div className="flex items-center gap-2.5 sm:gap-3.5 xl:flex-1 justify-start">
+        {/* Left Side: Brand Logo, Language Selector & Portfolio Matrix Capsule Pill Badge */}
+        <div className="flex items-center gap-2 sm:gap-3 xl:flex-1 justify-start">
           {/* Brand Logo */}
           <a
             href="#hero"
@@ -85,10 +88,13 @@ export const Navbar: React.FC<NavbarProps> = ({
             </div>
           </a>
 
+          {/* Sleek Glassmorphic Language Selector Dropdown (Between Brand Logo & PORTFOLIO MATRIX badge) */}
+          <LanguageSelector playClickSound={playClickSound} />
+
           {/* PORTFOLIO MATRIX 2026 Capsule Pill Badge */}
-          <div className="hidden md:inline-flex items-center gap-2 px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-full bg-[#00F2FE]/10 border border-[#00F2FE]/30 text-[#00F2FE] text-[10px] sm:text-xs font-mono font-bold tracking-widest uppercase shadow-[0_0_15px_rgba(0,242,254,0.2)] whitespace-nowrap">
+          <div className="hidden lg:inline-flex items-center gap-2 px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-full bg-[#00F2FE]/10 border border-[#00F2FE]/30 text-[#00F2FE] text-[10px] sm:text-xs font-mono font-bold tracking-widest uppercase shadow-[0_0_15px_rgba(0,242,254,0.2)] whitespace-nowrap">
             <span className="w-1.5 h-1.5 rounded-full bg-[#00F2FE] shadow-[0_0_8px_#00F2FE] animate-pulse" />
-            <span>PORTFOLIO MATRIX 2026</span>
+            <span>{t.nav.portfolioMatrixBadge}</span>
           </div>
         </div>
 
@@ -122,7 +128,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           <button
             type="button"
             onClick={onToggleSound}
-            title={soundEnabled ? 'Mute micro-interaction audio' : 'Enable audio feedback'}
+            title={soundEnabled ? t.nav.soundOn : t.nav.soundOff}
             className="p-2 rounded-full text-white/70 hover:text-[#00F2FE] hover:bg-white/[0.06] border border-white/10 hover:border-[#00F2FE]/30 hover:shadow-[0_0_15px_rgba(0,242,254,0.25)] transition-all text-xs flex-shrink-0"
           >
             {soundEnabled ? <Volume2 className="w-4 h-4 text-[#00F2FE]" /> : <VolumeX className="w-4 h-4" />}
@@ -158,7 +164,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           <div className="pb-3 mb-3 border-b border-white/10">
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#00F2FE]/10 border border-[#00F2FE]/30 text-[#00F2FE] text-[10px] font-mono font-bold tracking-widest uppercase shadow-[0_0_15px_rgba(0,242,254,0.2)] w-fit">
               <span className="w-1.5 h-1.5 rounded-full bg-[#00F2FE] shadow-[0_0_8px_#00F2FE] animate-pulse" />
-              <span>PORTFOLIO MATRIX 2026</span>
+              <span>{t.nav.portfolioMatrixBadge}</span>
             </div>
           </div>
 

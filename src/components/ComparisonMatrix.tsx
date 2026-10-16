@@ -2,26 +2,30 @@ import React, { useState } from 'react';
 import { X, Check, Zap, Sparkles, ShieldCheck, Gauge, Layers } from 'lucide-react';
 import { GlassCard } from './GlassCard';
 import { COMPARISON_DATA } from '../data/portfolioData';
+import { useLanguage } from '../context/LanguageContext';
 
 interface ComparisonMatrixProps {
   playClickSound: () => void;
 }
 
 export const ComparisonMatrix: React.FC<ComparisonMatrixProps> = ({ playClickSound }) => {
+  const { t } = useLanguage();
   const [activeTab, setActiveTab] = useState<'table' | 'cards'>('cards');
+
+  const rows = t.comparison.rows && t.comparison.rows.length > 0 ? t.comparison.rows : COMPARISON_DATA;
 
   return (
     <section id="vibe-matrix" className="relative z-10 scroll-mt-28 py-10 bg-transparent">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         <div className="text-center mb-14 reveal-on-scroll">
           <span className="inline-block px-3.5 py-1 rounded-full text-xs font-mono font-bold tracking-widest text-[#00F2FE] bg-[#00F2FE]/10 border border-[#00F2FE]/30 uppercase mb-3">
-            THE VIBECODING ADVANTAGE
+            {t.comparison.badge}
           </span>
           <h2 className="font-heading text-3xl sm:text-5xl font-black text-white tracking-[0.12em]">
-            TRADITIONAL E-COM VS. ANZIL&apos;S VIBE CODING OS
+            {t.comparison.title}
           </h2>
           <p className="text-sm sm:text-base text-[#A0A0AB] max-w-xl mx-auto mt-3">
-            A radical paradigm shift in storefront deployment velocity, aesthetic sophistication, and digital asset scaling.
+            {t.comparison.subtitle}
           </p>
         </div>
 
@@ -34,17 +38,17 @@ export const ComparisonMatrix: React.FC<ComparisonMatrixProps> = ({ playClickSou
                 <div className="flex items-center justify-between mb-8 pb-4 border-b border-white/10">
                   <div>
                     <span className="text-[10px] font-mono tracking-widest text-red-400 font-bold uppercase block mb-1">
-                      LEGACY WORKFLOW
+                      {t.comparison.traditionalBadge}
                     </span>
                     <h3 className="text-xl sm:text-2xl font-bold text-white/90">
-                      Traditional Development
+                      {t.comparison.traditionalCardTitle}
                     </h3>
                   </div>
                   <span className="text-2xl opacity-60">🐢</span>
                 </div>
 
                 <ul className="space-y-5">
-                  {COMPARISON_DATA.map((item, idx) => (
+                  {rows.map((item, idx) => (
                     <li key={idx} className="flex items-start gap-3.5">
                       <div className="w-5 h-5 rounded-full bg-red-500/15 border border-red-500/30 flex items-center justify-center flex-shrink-0 mt-0.5">
                         <X className="w-3.5 h-3.5 text-red-400" />
@@ -82,10 +86,10 @@ export const ComparisonMatrix: React.FC<ComparisonMatrixProps> = ({ playClickSou
                 <div className="flex items-center justify-between mb-8 pb-4 border-b border-white/15">
                   <div>
                     <div className="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full bg-[#00F2FE]/15 border border-[#00F2FE]/40 text-[#00F2FE] text-[10px] font-mono font-black uppercase tracking-wider mb-1 shadow-[0_0_12px_rgba(0,242,254,0.25)]">
-                      <Zap className="w-3 h-3 text-[#00F2FE]" /> 10X ACCELERATION
+                      <Zap className="w-3 h-3 text-[#00F2FE]" /> {t.comparison.vibeBadge}
                     </div>
                     <h3 className="text-xl sm:text-2xl font-bold text-white flex items-center gap-2 drop-shadow-[0_0_20px_rgba(0,242,254,0.3)]">
-                      ANZIL&apos;S VIBE CODING OS
+                      {t.comparison.vibeCardTitle}
                       <span className="text-lg">🚀</span>
                     </h3>
                   </div>
@@ -93,7 +97,7 @@ export const ComparisonMatrix: React.FC<ComparisonMatrixProps> = ({ playClickSou
                 </div>
 
                 <ul className="space-y-5">
-                  {COMPARISON_DATA.map((item, idx) => (
+                  {rows.map((item, idx) => (
                     <li key={idx} className="flex items-start gap-3.5">
                       <div className="w-5 h-5 rounded-full bg-[#00F2FE]/20 border border-[#00F2FE]/50 flex items-center justify-center flex-shrink-0 mt-0.5 shadow-[0_0_12px_rgba(0,242,254,0.45)]">
                         <Check className="w-3.5 h-3.5 text-[#00F2FE]" />
